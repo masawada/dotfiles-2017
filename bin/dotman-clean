@@ -1,0 +1,29 @@
+#!/bin/bash
+
+source "$LIB_DIR/util.sh";
+
+success_message="The cleaning process finished successfully.";
+
+if [ -z "$(ls $BUILD_DIR)" ]; then
+  log_success $success_message;
+  exit;
+fi
+
+for filepath in "$BUILD_DIR"/*
+do
+  filename=`basename $filepath`;
+  dotfile="$TARGET_DIR/.$filename";
+
+  log_info "Removing .$filename";
+  if [ -e $dotfile ]; then
+    log_info "Unlinking $dotfile"
+    rm -rf $dotfile;
+  else
+    log_warn ".$dotfile does not exist.";
+  fi
+
+  log_info "Removing $filepath"
+  rm -rf $filepath;
+done
+
+log_success $success_message;

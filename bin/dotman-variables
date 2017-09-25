@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# show exported variables
+echo "\$DOTROOT     $DOTROOT";
+echo "\$CONFIGS_DIR $CONFIGS_DIR";
+echo "\$LIB_DIR     $LIB_DIR";
+echo "\$BUILD_DIR   $BUILD_DIR";
+echo "\$TARGET_DIR  $TARGET_DIR";

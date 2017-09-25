@@ -1,0 +1,26 @@
+#!/bin/bash
+
+app_name="dotman";
+subcommand_name=$1; shift;
+bin_name="$app_name-$subcommand_name";
+bin_dir=$(cd $(dirname $0);pwd);
+args="$@";
+
+export DOTROOT=`dirname $bin_dir`;
+export TARGET_DIR="${HOME%/}";
+export BUILD_DIR="$DOTROOT/.build";
+export CONFIGS_DIR="$DOTROOT/etc/config";
+export LIB_DIR="$DOTROOT/etc/lib";
+
+source "$LIB_DIR/util.sh";
+
+if type "$bin_dir/$bin_name" > /dev/null 2>&1; then
+  bin="$bin_dir/$bin_name";
+elif type $bin_name > /dev/null 2>&1; then
+  bin="$bin_name";
+else
+  log_error "The subcommand '$subcommand_name' not found." 2>&1;
+  exit 1;
+fi
+
+bash $bin $args;

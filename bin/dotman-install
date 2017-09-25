@@ -1,0 +1,4 @@
+#!/bin/bash
+
+bash $DOTROOT/bin/dotman-build
+bash $DOTROOT/bin/dotman-deploy

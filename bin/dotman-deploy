@@ -1,0 +1,28 @@
+#!/bin/bash
+
+source "$LIB_DIR/util.sh";
+
+success_message="The deployment process finished successfully.";
+
+mkdir -p $BUILD_DIR;
+
+if [ -z "$(ls $BUILD_DIR)" ]; then
+  log_success $success_message;
+  exit;
+fi
+
+for filepath in "$BUILD_DIR"/*
+do
+  filename=`basename $filepath`;
+  dotfile="$TARGET_DIR/.$filename";
+
+  log_info "Deploying .$filename";
+  if [ -e $dotfile ]; then
+    log_warn ".$dotfile already exists. The deployment was skipped.";
+  else
+    log_info "Linking .$dotfile";
+    ln -s $filepath $dotfile;
+  fi
+done
+
+log_success $success_message;

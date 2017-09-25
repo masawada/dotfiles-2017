@@ -1,0 +1,26 @@
+#!/bin/bash
+
+source "$LIB_DIR/util.sh";
+
+success_message="The build process finished successfully.";
+
+mkdir -p $BUILD_DIR;
+
+if [ -z "$(ls $CONFIGS_DIR)" ]; then
+  log_success $success_message;
+  exit;
+fi
+
+for config_dir in "$CONFIGS_DIR"/*
+do
+  log_info "Building dotfiles: `basename $config_dir`"
+  build="$config_dir/build.sh";
+
+  if [ -e "$build" ]; then
+    CONFIG_DIR=$config_dir bash $build;
+  else
+    log_warn "$build not found. The build was skipped.";
+  fi
+done
+
+log_success $success_message;
