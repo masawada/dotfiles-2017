@@ -30,11 +30,9 @@ color() {
   printf "${prefix}${color}${text}${prefix}${default}"
 }
 
-_timestamp() {
-  color cyan "[$(date +'%Y/%m/%d %H:%M:%S')]"
-}
+logger() {
+  # Usage: logger <log_type> <message>
 
-_logger() {
   local log_type="$1"
   local message="$2"
   local color=""
@@ -66,11 +64,13 @@ _logger() {
     text="${message}"
   fi
 
-  _timestamp; color "${color}" " ${text}"; echo
+  color cyan "[$(date +'%Y/%m/%d %H:%M:%S')] "
+  color "${color}" "${text}"
+  printf "\n"
 }
 
-log_info()    { _logger INFO    "$*"; }
-log_success() { _logger SUCCESS "$*"; }
-log_warn()    { _logger WARN    "$*"; }
-log_error()   { _logger ERROR   "$*" 1>&2; }
-log()         { _logger         "$*"; }
+log_info()    { logger INFO    "$*"; }
+log_success() { logger SUCCESS "$*"; }
+log_warn()    { logger WARN    "$*"; }
+log_error()   { logger ERROR   "$*" 1>&2; }
+log()         { logger DEFAULT "$*"; }
