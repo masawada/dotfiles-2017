@@ -11,7 +11,7 @@ fi
 
 for filepath in "$BUILD_DIR"/*
 do
-  filename=`basename $filepath`;
+  filename=$(basename $filepath);
   dotfile="$TARGET_DIR/.$filename";
 
   log_info "Removing .$filename";

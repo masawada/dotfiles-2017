@@ -13,7 +13,7 @@ fi
 
 for config_dir in "$CONFIGS_DIR"/*
 do
-  log_info "Building dotfiles: `basename $config_dir`"
+  log_info "Building dotfiles: $(basename $config_dir)"
   build="$config_dir/build.sh";
 
   if [ -e "$build" ]; then

@@ -6,7 +6,7 @@ bin_name="$app_name-$subcommand_name";
 bin_dir=$(cd $(dirname $0);pwd);
 args="$@";
 
-export DOTROOT=`dirname $bin_dir`;
+export DOTROOT=$(dirname $bin_dir);
 export TARGET_DIR="${HOME%/}";
 export BUILD_DIR="$DOTROOT/.build";
 export CONFIGS_DIR="$DOTROOT/etc/config";
