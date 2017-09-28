@@ -69,11 +69,25 @@ logger() {
   printf "\n"
 }
 
-log_info()    { logger INFO    "$*"; }
-log_success() { logger SUCCESS "$*"; }
-log_warn()    { logger WARN    "$*"; }
-log_error()   { logger ERROR   "$*" 1>&2; }
-log()         { logger DEFAULT "$*"; }
+log_info() {
+  logger INFO "$*"
+}
+
+log_success() {
+  logger SUCCESS "$*"
+}
+
+log_warn() {
+  logger WARN "$*"
+}
+
+log_error() {
+  logger ERROR "$*" 1>&2
+}
+
+log() {
+  logger DEFAULT "$*"
+}
 
 ostype() {
   case "$(uname | tr '[:upper:]' '[:lower:]')" in
