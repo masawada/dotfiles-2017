@@ -74,3 +74,44 @@ log_success() { logger SUCCESS "$*"; }
 log_warn()    { logger WARN    "$*"; }
 log_error()   { logger ERROR   "$*" 1>&2; }
 log()         { logger DEFAULT "$*"; }
+
+ostype() {
+  case "$(uname | tr '[:upper:]' '[:lower:]')" in
+    *'linux'*)
+      echo 'linux'
+      ;;
+    *'darwin'*)
+      echo 'macos'
+      ;;
+    *'bsd'*)
+      echo 'bsd'
+      ;;
+    *)
+      echo 'unknown'
+      ;;
+  esac
+}
+
+is_linux() {
+  if [ $(ostype) = "linux" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+is_macos() {
+  if [ $(ostype) = "macos" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+is_bsd() {
+  if [ $(ostype) = "bsd" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
