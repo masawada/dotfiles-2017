@@ -1,8 +1,6 @@
 
 # Clipboard
-bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
-
-# Mac OSX only
 set-option -g default-command "reattach-to-user-namespace -l zsh"
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel "reattach-to-user-namespace pbcopy"
 
 # vim:ft=conf
