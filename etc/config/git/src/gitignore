@@ -21,3 +21,6 @@ Thumbs.db
 
 # Redis dump file
 dump.rdb
+
+# Ignore vendor/bundle
+vendor/bundle
