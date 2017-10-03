@@ -14,6 +14,7 @@
 [alias]
 	  co = checkout
 	  s = status -sb
+    branches = branch -l
 	  see = !hub browse -- pull/$(git symbolic-ref --short HEAD)
     review = diff $(git merge-base origin/HEAD HEAD)
     changed = diff --name-only $(git merge-base origin/HEAD HEAD)
