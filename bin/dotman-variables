@@ -1,8 +1,28 @@
 #!/bin/bash
 
 # show exported variables
-echo "\$DOTROOT     $DOTROOT";
-echo "\$CONFIGS_DIR $CONFIGS_DIR";
-echo "\$LIB_DIR     $LIB_DIR";
-echo "\$BUILD_DIR   $BUILD_DIR";
-echo "\$TARGET_DIR  $TARGET_DIR";
+
+case "$1" in
+  'root')
+    echo -n "$DOTROOT";
+    ;;
+  'config')
+    echo -n "$CONFIGS_DIR";
+    ;;
+  'lib')
+    echo -n "$LIB_DIR";
+    ;;
+  'build')
+    echo -n "$BUILD_DIR";
+    ;;
+  'target')
+    echo -n "$TARGET_DIR";
+    ;;
+  *)
+    echo "\$DOTROOT     $DOTROOT";
+    echo "\$CONFIGS_DIR $CONFIGS_DIR";
+    echo "\$LIB_DIR     $LIB_DIR";
+    echo "\$BUILD_DIR   $BUILD_DIR";
+    echo "\$TARGET_DIR  $TARGET_DIR";
+    ;;
+esac
