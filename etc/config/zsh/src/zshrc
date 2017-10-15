@@ -1,0 +1,189 @@
+# Aliases
+alias foreman="bundle exec foreman"
+alias rails="bundle exec rails"
+alias rake="bundle exec rake"
+alias rackup="bundle exec rackup"
+alias rspec="bundle exec rspec"
+alias cap="bundle exec cap"
+alias prt="carton exec prt"
+alias be="bundle exec"
+alias ce="carton exec"
+
+if whence gls > /dev/null; then
+  alias ls="gls -F --color"
+else
+  alias ls="ls -F --color"
+fi
+
+whence ghq-pwd > /dev/null 2>&1 && alias pwd="ghq-pwd"
+whence vim     > /dev/null 2>&1 && alias vi="vim"
+
+# Hokan - TODO
+autoload -Uz compinit && compinit
+setopt auto_pushd
+setopt pushd_ignore_dups
+setopt correct
+
+zstyle ':completion:*:default' menu select=2
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}' # ignore case
+zstyle ':completion:*:cd:*' ignore-parents parent pwd
+zstyle ':completion:*' list-separator '-'
+
+# Color - TODO
+export LS_COLORS='di=01;34:ln=01;35:so=01;32:ex=01;31:bd=46;34:cd=43;34:su=41;30:sg=46;30:tw=42;30:ow=43;30'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# Prompt
+autoload -Uz colors && colors
+PROMPT="%{${fg[yellow]}%}%(!.#.$) %{$reset_color%}"
+PROMPT2="%{${fg[yellow]}%}%_> %{$reset_color%}"
+SPROMPT="%r is correct? [n,y,a,e]: "
+
+precmd () {
+  RPROMPT="%{${fg[yellow]}%}[$(pwd)]%{${reset_color}%}"
+}
+
+# History
+HISTFILE=$HOME/.zsh_history
+HISTSIZE=100000
+SAVEHIST=$HISTSIZE
+setopt share_history
+setopt hist_ignore_all_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
+setopt hist_no_store
+
+# load *env
+whence plenv > /dev/null 2>&1 && eval "$(plenv init - zsh)"
+whence rbenv > /dev/null 2>&1 && eval "$(rbenv init - zsh)"
+whence ndenv > /dev/null 2>&1 && eval "$(ndenv init - zsh)"
+whence pyenv > /dev/null 2>&1 && eval "$(pyent init - zsh)"
+
+# Default Permission
+umask 022
+
+# Beep
+setopt nolistbeep
+
+# Load plugins - TODO
+# if [ -f $HOME/.zplug/init.zsh ]; then
+#   export ZPLUG_LOADFILE=$HOME/.zsh/zplug.zsh
+#   source $HOME/.zplug/init.sh
+#   if ! zplug check --verbose; then
+#     printf "Install? [y/N]: "
+#     if read -q; then
+#       echo; zplug install
+#     fi
+#   fi
+#   zplug load
+# fi
+
+# Functions - TODO
+# peco select history
+function peco-select-history() {
+    local tac
+    if which tac > /dev/null; then
+        tac="tac"
+    else
+        tac="tail -r"
+    fi
+    BUFFER=$(history -n 1 | \
+        eval $tac | \
+        peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle clear-screen
+}
+zle -N peco-select-history
+
+# peco find directory
+function peco-find() {
+  # file types
+  local -a dir_only
+    dir_only=("cd" "ls")
+  local -a file_only
+    file_only=("vim")
+
+  # init variables
+  local current_buffer=$BUFFER
+  local search_root=''
+  local file_path=''
+  local file_type=''
+  local filter='cat'
+
+  # helper
+  function _is_contain() {
+    local flag=0
+    for val in $@; do
+      if test "$val" = "$current_buffer"; then
+        flag=1
+      fi
+    done
+
+    echo $flag
+  }
+
+
+  git_search_command='( git ls-files; ( git ls-files | while read line; do echo ${line%/*}; done ) ) | sort | uniq'
+
+  if test `_is_contain $dir_only` = "1" ; then
+    file_type='-type d'
+    git_search_command='( git ls-files | while read line; do echo ${line%/*}; done ) | sort | uniq'
+  elif test `_is_contain $file_only` = '1' ; then
+    file_type='-type f'
+    git_search_command='git ls-files'
+  fi
+
+  if git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    search_root=`git rev-parse --show-toplevel`
+    file_path=$(eval "cd ${search_root} && ${git_search_command} | $filter | peco")
+    if [ $#file_path -ne 0 ] ; then
+      file_path=${search_root}/${file_path}
+    fi
+  else
+    search_root=`pwd`
+    file_path=$(eval "find -L ${search_root} ${file_type} -maxdepth 10 | ${filter} | peco")
+  fi
+
+  if [ $#file_path -ne 0 ] ; then
+    BUFFER="${current_buffer} ${file_path}"
+    CURSOR=$#BUFFER
+  fi
+  zle clear-screen
+}
+zle -N peco-find
+
+# peco select history
+# http://qiita.com/ysk_1031/items/8cde9ce8b4d0870a129d
+function peco-ghq {
+  local dir=$(ghq list -p | peco --query "$LBUFFER")
+  if [ $(echo $dir | grep -e '/.ghq' -e '/.go') ]; then
+    BUFFER="cd ${dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-ghq
+
+function peco-git-editdiff {
+  local dir=$(git diff --name-only | peco)
+  if [ ${#dir} -ne 0 ]; then
+    BUFFER="vim $(git rev-parse --show-toplevel)/${dir}"
+    zle accept-line
+  fi
+  zle clear-screen
+}
+zle -N peco-git-editdiff
+
+function cd-to-top {
+  BUFFER="cd $(git rev-parse --show-toplevel)"
+  zle accept-line
+  zle clear-screen
+}
+zle -N cd-to-top
+
+# bind keys
+whence peco-select-history > /dev/null 2>&1 && bindkey '^r' peco-select-history
+whence peco-find           > /dev/null 2>&1 && bindkey '^f' peco-find
+whence peco-ghq            > /dev/null 2>&1 && bindkey '^g' peco-ghq
+whence peco-git-editdiff   > /dev/null 2>&1 && bindkey '^e' peco-git-editdiff
+whence cd-to-top           > /dev/null 2>&1 && bindkey '^t' cd-to-top
