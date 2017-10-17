@@ -47,7 +47,7 @@ export GIT_EDITOR="${EDITOR}"
 
 # Pager
 export PAGER="less"
-export LESS="-R"
+export LESS="-FRX"
 
 # History
 export HISTFILE="${HOME}/.zsh_history"
