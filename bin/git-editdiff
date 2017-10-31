@@ -1,0 +1,4 @@
+FILE_PATH=$(git diff --name-only | peco)
+if [ ${#FILE_PATH} -ne 0 ]; then
+  $EDITOR $(git rev-parse --show-toplevel)/$FILE_PATH
+fi

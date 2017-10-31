@@ -1,0 +1,11 @@
+SELECTED_BRANCHES_TO_DELETE="$(git branch -l | cut -f 3 -d ' ' | sed '/^$/d' | peco | awk -F ' ' '{print $NF}')"
+if [ -n "$SELECTED_BRANCHES_TO_DELETE" ]; then
+  branches=`echo "$SELECTED_BRANCHES_TO_DELETE" | tr '\n' ' '`
+  git branch -d ${branches}
+fi
+
+#echo "deleted branches:"
+#for line in $SELECTED_BRANCHES_TO_DELETE
+#do
+#  echo $line
+#done

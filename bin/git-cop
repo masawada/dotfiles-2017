@@ -1,0 +1,1 @@
+git checkout `git branch | peco | sed -e "s/\* //g" | awk "{print \$1}"`
