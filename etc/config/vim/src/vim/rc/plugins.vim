@@ -41,6 +41,7 @@ endif
 
 if s:is_installed('vim-quickrun')
   let g:quickrun_config = {}
+  nnoremap <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
 endif
 
 if s:is_installed('vim-quickrun') && s:is_installed('current-func-info.vim')
