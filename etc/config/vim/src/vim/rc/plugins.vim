@@ -31,6 +31,9 @@ function! s:is_installed(plugin_name)
   return 0
 endfunction
 
+"set , as <Leader>"
+let mapleader = ","
+
 if s:is_installed('lexima.vim')
   inoremap [ []<LEFT>
   inoremap ( ()<LEFT>
@@ -41,7 +44,7 @@ endif
 
 if s:is_installed('vim-quickrun')
   let g:quickrun_config = {}
-  nnoremap <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
+  nnoremap <silent> <Leader>q :<C-u>bw! \[quickrun\ output\]<CR>
 endif
 
 if s:is_installed('vim-quickrun') && s:is_installed('current-func-info.vim')
@@ -66,7 +69,7 @@ if s:is_installed('vim-quickrun') && s:is_installed('current-func-info.vim')
     endif
   endfunction
 
-  nnoremap <silent> ,t :update<CR>:call <SID>prove_this()<CR>
+  nnoremap <silent> <Leader>t :update<CR>:call <SID>prove_this()<CR>
 endif
 
 if s:is_installed('ale')
