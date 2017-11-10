@@ -9,6 +9,7 @@ Plug 'thinca/vim-quickrun'
 Plug 'tpope/vim-surround'
 Plug 'tyru/current-func-info.vim'
 Plug 'maralla/completor.vim',        { 'do': 'make js' }
+Plug 'masawada/completor-dictionary'
 Plug 'nanotech/jellybeans.vim'
 Plug 'SirVer/ultisnips'
 Plug 'w0rp/ale'
@@ -95,6 +96,7 @@ if s:is_installed('completor.vim')
   inoremap <expr> <Esc> pumvisible() ? "\<C-e>" : "\<Esc>"
   inoremap <expr> <CR>  pumvisible() ? "\<C-y>" : "\<CR>"
   inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+  "let g:completor_debug = 1
 endif
 
 if s:is_installed('jellybeans.vim')
