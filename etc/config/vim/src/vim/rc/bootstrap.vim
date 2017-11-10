@@ -20,5 +20,6 @@ call s:load_rc('options.vim')
 call s:load_rc('plugins.vim')
 call s:load_rc('mappings.vim')
 call s:load_rc('visual.vim')
+call s:load_rc('commands.vim')
 
 set secure
