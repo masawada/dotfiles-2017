@@ -8,6 +8,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'thinca/vim-quickrun'
 Plug 'tpope/vim-surround'
 Plug 'tyru/current-func-info.vim'
+Plug 'tyru/open-browser.vim'
+Plug 'tyru/open-browser-github.vim'
 Plug 'maralla/completor.vim',        { 'do': 'make js' }
 Plug 'masawada/completor-dictionary'
 Plug 'nanotech/jellybeans.vim'
@@ -71,6 +73,11 @@ if s:is_installed('vim-quickrun') && s:is_installed('current-func-info.vim')
   endfunction
 
   nnoremap <silent> <Leader>t :update<CR>:call <SID>prove_this()<CR>
+endif
+
+if s:is_installed('open-browser.vim') && s:is_installed('open-browser-github.vim')
+  nnoremap <silent> <C-g> :OpenGithubFile<CR>
+  vnoremap <silent> <C-g> :'<,'>OpenGithubFile<CR>
 endif
 
 if s:is_installed('ale')
